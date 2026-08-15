@@ -1,0 +1,33 @@
+{
+  "name": "taiwan-3d-map",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build:shapes": "node tools/build-shapes.mjs",
+    "vendor": "node tools/vendor-three.mjs",
+    "serve": "node tools/serve.mjs",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "typecheck": "tsc -p jsconfig.json",
+    "lint": "eslint . --max-warnings 0",
+    "mutate": "stryker run",
+    "gauntlet": "node tools/gauntlet.mjs"
+  },
+  "dependencies": {
+    "three": "0.160.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.62.1",
+    "@stryker-mutator/core": "10.0.0",
+    "@stryker-mutator/vitest-runner": "10.0.0",
+    "@vitest/coverage-v8": "4.1.10",
+    "eslint": "10.8.1",
+    "fast-check": "4.9.0",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10"
+  }
+}

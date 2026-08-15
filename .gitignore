@@ -1,0 +1,7 @@
+node_modules/
+coverage/
+mutation-report/
+playwright-report/
+test-results/
+artifacts/tmp/
+.DS_Store
