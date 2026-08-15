@@ -315,3 +315,33 @@ EVIDENCE.
 - 2026-08-16 (Asia/Taipei): người dùng trả lời nguyên văn
   **“duyệt hãy thực hiện dự án ngay”**. SPEC bản 1 được phê duyệt; cho phép bắt
   đầu implementation và toàn bộ setup ở mục 5.
+
+## 10. Revision 2 — type declarations (append-only, chờ duyệt)
+
+Trong lần chạy gauntlet đầu, `tsc` phát hiện `three@0.160.0` không kèm type
+declarations và project chưa có Node declarations. Kết quả là TypeScript đi vào
+kiểm file JavaScript của dependency, sinh 5.756 lỗi không đại diện cho mã dự án.
+
+Revision này chỉ bổ sung hai dev dependency type-only; không thay đổi runtime,
+UI, dữ liệu hay tiêu chí hành vi:
+
+| Dependency pin | Phạm vi | Lý do |
+|---|---|---|
+| `@types/three@0.160.0` | dev | type declarations khớp chính xác Three.js r160 đã duyệt |
+| `@types/node@26.2.0` | dev | type declarations cho server/builder chạy trên Node v24 |
+
+Sau khi duyệt, `jsconfig.json` sẽ dùng hai declaration packages để `tsc` kiểm
+toàn bộ `src/`, `tools/`, config và tests với 0 lỗi. Trạng thái revision:
+**CHỜ NGƯỜI DÙNG DUYỆT**.
+
+Ghi nhận gauntlet liên quan: coverage lần đầu báo 92,07% lines / 87,40% branches
+nhưng exit 0 do block `coverage` đặt sai cấp trong `vitest.config.js`. Đây là
+checker fail-open; sau khi Revision 2 được duyệt, block sẽ được chuyển vào
+`test.coverage`, chạy negative control để chứng minh threshold trả exit khác 0,
+rồi bổ sung test hành vi (không test chỉ để chạm dòng) cho tới khi gate đạt.
+
+### Phê duyệt Revision 2
+
+- 2026-08-16 (Asia/Taipei): người dùng trả lời nguyên văn
+  **“duyệt tất cả , hãy chạy dự án tới hoàn thành 100%”**. Revision 2 và việc
+  tiếp tục toàn bộ gauntlet được phê duyệt.

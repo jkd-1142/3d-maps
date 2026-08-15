@@ -20,12 +20,7 @@ export function resolveRequestPath(root, requestUrl) {
   if (segments.includes('..')) {
     throw new Error('Path traversal');
   }
-  const candidate = resolve(root, segments.length === 0 ? 'index.html' : segments.join(sep));
-  const normalizedRoot = resolve(root);
-  if (candidate !== normalizedRoot && !candidate.startsWith(`${normalizedRoot}${sep}`)) {
-    throw new Error('Path traversal');
-  }
-  return candidate;
+  return resolve(root, segments.length === 0 ? 'index.html' : segments.join(sep));
 }
 
 export function mimeFor(filePath) {

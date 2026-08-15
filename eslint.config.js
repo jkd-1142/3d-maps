@@ -10,6 +10,7 @@ export default [
       globals: {
         console: 'readonly', process: 'readonly', Buffer: 'readonly', URL: 'readonly',
         fetch: 'readonly', document: 'readonly', window: 'readonly', navigator: 'readonly',
+        HTMLSelectElement: 'readonly', HTMLButtonElement: 'readonly', HTMLElement: 'readonly', HTMLCanvasElement: 'readonly',
         innerWidth: 'readonly', innerHeight: 'readonly', devicePixelRatio: 'readonly',
         matchMedia: 'readonly', requestAnimationFrame: 'readonly', performance: 'readonly',
         setTimeout: 'readonly', clearTimeout: 'readonly', AbortController: 'readonly',

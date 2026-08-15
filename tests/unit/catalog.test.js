@@ -19,4 +19,13 @@ describe('S03/S04 catalog consistency', () => {
     expect(byId['chiayi-city'].name).toBe(byId['chiayi-county'].name);
     expect(byId['chiayi-city'].type).not.toBe(byId['chiayi-county'].type);
   });
+
+  it('S03 rejects incomplete, duplicate, or invalid catalog records', () => {
+    expect(() => assertCatalog(null)).toThrow('exactly 22');
+    expect(() => assertCatalog(PROVINCES.slice(1))).toThrow('exactly 22');
+    expect(() => assertCatalog(PROVINCES.map((item, index) => index === 1 ? { ...item, id: PROVINCES[0].id } : item))).toThrow('non-empty and unique');
+    expect(() => assertCatalog(PROVINCES.map((item, index) => index === 0 ? { ...item, id: '' } : item))).toThrow('non-empty and unique');
+    expect(() => assertCatalog(PROVINCES.map((item, index) => index === 0 ? { ...item, name: '' } : item))).toThrow('text is incomplete');
+    expect(() => assertCatalog(PROVINCES.map((item, index) => index === 0 ? { ...item, pop: 0 } : item))).toThrow('population is invalid');
+  });
 });

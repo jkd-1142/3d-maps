@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071622">
+  <meta name="description" content="Khám phá 22 huyện thị Đài Loan trên bản đồ 3D tương tác.">
+  <title>Đài Loan 3D — 22 huyện thị</title>
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script>
+</head>
+<body>
+  <a class="skip-link" href="#province-select">Bỏ qua bản đồ 3D</a>
+  <header class="topbar">
+    <div class="brand">
+      <p class="eyebrow">Hành trình thị giác · 22 điểm đến</p>
+      <h1>Đài Loan <span>3D</span></h1>
+      <p class="brand-copy">Chạm vào từng vùng đất để đánh thức một biểu tượng văn hóa, thiên nhiên và nhịp sống riêng.</p>
+    </div>
+    <div class="controls-panel" aria-label="Điều khiển khám phá">
+      <div class="field"><label for="province-select">Đi thẳng đến</label><select id="province-select"><option value="">Chọn một huyện thị…</option></select></div>
+      <button id="reset-view" type="button" aria-label="Trở về toàn cảnh">Toàn cảnh</button>
+    </div>
+    <p class="orientation"><strong>Bắc</strong> ở phía xa<br>Thái Bình Dương ở phía Đông</p>
+  </header>
+  <main id="map-stage" aria-label="Trải nghiệm bản đồ Đài Loan">
+    <aside id="province-card" class="province-card" aria-live="polite" aria-atomic="true">
+      <p id="card-type" class="card-type"></p><h2 id="card-name"></h2>
+      <p id="card-landmark" class="card-landmark"></p><p id="card-desc" class="card-description"></p><p id="card-stats" class="card-stats"></p>
+    </aside>
+    <section id="fallback" class="fallback" hidden><h2>Không thể khởi tạo bản đồ 3D</h2><p>Trình duyệt hoặc thiết bị hiện không hỗ trợ WebGL. Bạn vẫn có thể dùng danh sách “Đi thẳng đến” để đọc thông tin 22 huyện thị.</p></section>
+  </main>
+  <p class="footer-hint">Kéo để xoay · Cuộn để thu phóng · Nhấp biển hoặc Esc để trở về</p>
+  <p id="app-status" class="status" role="status" data-state="loading">Đang dựng địa hình…</p>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
