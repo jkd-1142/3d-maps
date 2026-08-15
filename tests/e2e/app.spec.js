@@ -17,6 +17,7 @@ test.describe('Taiwan 3D map acceptance', () => {
   test('S05 boots WebGL with 22 provinces and no runtime errors', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop-chromium', 'desktop visual contract');
     const errors = await collectRuntimeErrors(page);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     await expect(page.locator('#app-status')).toHaveAttribute('data-state', 'ready');
     await expect(page.locator('canvas')).toHaveCount(1);
@@ -64,6 +65,7 @@ test.describe('Taiwan 3D map acceptance', () => {
 
   test('S11/S12 mobile selection fits without horizontal overflow', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'mobile-chromium', 'mobile contract');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     await expect(page.locator('#app-status')).toHaveAttribute('data-state', 'ready');
     await page.selectOption('#province-select', 'hualien');
