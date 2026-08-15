@@ -120,3 +120,33 @@ Các thất bại quan trọng đã được quan sát thật trước khi sửa
 - API/DB/auth/concurrency không tồn tại trong kiến trúc static nên không áp dụng.
 - Browser matrix dùng Chromium desktop/mobile emulation; không tuyên bố đã chạy Safari/Firefox hay thiết bị vật lý.
 - “Hoàn thành 100%” ở đây nghĩa là 100% checklist/spec đã duyệt và 11/11 gauntlet, không phải chứng minh tuyệt đối rằng không thể có lỗi ngoài phạm vi.
+
+## Revision 3 — Tiếng Trung phồn thể
+
+**PASS** trên commit mã `17e2a4e000cc3579ad39b1dccbfce1e7ee01880b`.
+
+| Thuộc tính | Kết quả |
+|---|---|
+| Phạm vi bản địa hóa | 2 locale; toàn bộ UI, a11y, trạng thái, fallback, 22 đơn vị và 22 địa danh |
+| Unit/integration | 8 file, 22/22 test |
+| Coverage | 100% statements 116/116, branches 93/93, functions 29/29, lines 106/106 |
+| Browser acceptance | 10 pass, 10 expected project-skip; desktop + mobile Chromium |
+| Bilingual contract | `?lang=zh-TW`, persistence, chuyển Việt ↔ 繁中 không mất lựa chọn |
+| Mutation | 96,18%; 277/288 killed, 11 equivalent/redundant survivors |
+| Typecheck / lint | 0 lỗi / 0 cảnh báo |
+| Supply chain | 331 package; 0 secret trong 42 file; 0 high/critical; 2 moderate dev-transitive |
+| Source-state | 47 file; SHA-256 `89aac256f5540e1bede959eebba38100b9fd7537a1aac3593221313eaa006d58` |
+| Tổng gauntlet | **11/11 PASS** |
+
+Hai mutant formatter tiếng Trung có hành vi quan sát được đã được đóng bằng case
+làm tròn đơn vị vạn và dữ liệu giả dạng chuỗi, nâng mutation từ 95,49% lên
+96,18%. Mutant default locale `'vi'` → `''` còn lại là tương đương vì cả hai đều
+được `normalizeLocale` quy về tiếng Việt; 10 survivor cũ vẫn thuộc các nhóm biên
+toán học hoặc nhánh rỗng hội tụ đã phân loại ở trên.
+
+Fresh gauntlet đầu của revision phát hiện WebGL software renderer bị GPU stall
+khi browser chạy ngay sau năm mutation worker: một lượt startup 4.434 ms cùng
+timeout axe/screenshot. Không nới ngưỡng 3.000 ms. Runtime được sửa để giới hạn
+30 FPS và render theo nhu cầu khi `prefers-reduced-motion`; browser gate được
+chạy trên môi trường sạch trước mutation. Kết quả E2E ổn định còn 38–50 giây và
+fresh gauntlet cuối đạt đủ 11/11 lớp.
