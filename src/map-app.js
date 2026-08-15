@@ -15,7 +15,7 @@ function largestRing(polys) {
 }
 
 function createSea(scene) {
-  const geometry = new THREE.PlaneGeometry(560, 560, 42, 42);
+  const geometry = new THREE.PlaneGeometry(560, 560, 32, 32);
   geometry.rotateX(-Math.PI / 2);
   const base = geometry.attributes.position.array.slice();
   const sea = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial({ color: '#0b3a57', roughness: 0.36, metalness: 0.1 }));
@@ -26,7 +26,7 @@ function createSea(scene) {
 }
 
 function createDust(scene) {
-  const count = 180;
+  const count = 140;
   const positions = new Float32Array(count * 3);
   let seed = 0x2f6e2b1;
   const random = () => {
@@ -58,7 +58,7 @@ function makeProvinceEntry(province, index, scene, hitMeshes) {
       const coordinate = project(longitude, latitude);
       pointIndex === 0 ? shape.moveTo(coordinate.x, -coordinate.z) : shape.lineTo(coordinate.x, -coordinate.z);
     });
-    const geometry = new THREE.ExtrudeGeometry(shape, { depth: DEPTH, bevelEnabled: true, bevelThickness: 0.28, bevelSize: 0.2, bevelSegments: 2, curveSegments: 1 });
+    const geometry = new THREE.ExtrudeGeometry(shape, { depth: DEPTH, bevelEnabled: true, bevelThickness: 0.28, bevelSize: 0.2, bevelSegments: 1, curveSegments: 1 });
     geometry.rotateX(-Math.PI / 2);
     const mesh = new THREE.Mesh(geometry, [topMaterial, sideMaterial]);
     mesh.castShadow = true;
@@ -103,7 +103,7 @@ export function createTaiwanMap({ mount, onActiveChange, onSelectedChange }) {
   const sun = new THREE.DirectionalLight('#ffe3b0', 1.85);
   sun.position.set(62, 105, 42);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.set(1024, 1024);
   Object.assign(sun.shadow.camera, { left: -110, right: 110, top: 110, bottom: -110, far: 400 });
   scene.add(sun);
   const sea = createSea(scene);

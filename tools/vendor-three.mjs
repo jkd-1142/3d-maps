@@ -3,7 +3,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const copies = [
-  ['../node_modules/three/build/three.module.js', '../vendor/three.module.js'],
+  ['../node_modules/three/build/three.module.min.js', '../vendor/three.module.js'],
   ['../node_modules/three/examples/jsm/controls/OrbitControls.js', '../vendor/addons/controls/OrbitControls.js'],
 ];
 
