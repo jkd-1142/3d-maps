@@ -69,6 +69,17 @@ describe('GeoJSON shape builder', () => {
     thresholdGeo.features[0].geometry.coordinates = [[thresholdRing]];
     expect(() => buildProvinceEntries(thresholdGeo, PROVINCES)).toThrow('No valid polygon rings');
 
+    const translatedTinyRing = [[10, 10], [10.01, 10], [10.01, 10.01], [10, 10.01], [10, 10]];
+    const translatedTinyGeo = makeGeoJson();
+    translatedTinyGeo.features[0].geometry.coordinates = [[translatedTinyRing]];
+    expect(() => buildProvinceEntries(translatedTinyGeo, PROVINCES)).toThrow('No valid polygon rings');
+
+    const validRing = [[120, 23], [120.1, 23], [120.1, 23.1], [120, 23.1], [120, 23]];
+    const shortHighAreaRing = [[0, 0], [1, 0], [0, 1]];
+    const guardedLengthGeo = makeGeoJson();
+    guardedLengthGeo.features[0].geometry.coordinates = [[shortHighAreaRing], [validRing]];
+    expect(buildProvinceEntries(guardedLengthGeo, PROVINCES)[0].polys).toHaveLength(1);
+
     const malformedButArrayLike = /** @type {any} */ ({ 0: [0, 0], 1: [1, 0], 2: [1, 1], 3: [0, 1], 4: [0, 0], length: 5 });
     const guardedGeo = makeGeoJson();
     guardedGeo.features[0].geometry.coordinates.unshift([malformedButArrayLike]);
