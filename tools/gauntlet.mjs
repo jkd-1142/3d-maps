@@ -7,18 +7,22 @@ for (const relative of stale) {
   await rm(new URL(relative, root), { recursive: true, force: true });
 }
 
-const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+const npmCli = process.env.npm_execpath;
+if (!npmCli) {
+  throw new Error('npm_execpath is unavailable; run this entry point through `npm run gauntlet`');
+}
+const npmArgs = (...args) => [npmCli, ...args];
 const layers = /** @type {Array<[string, string, string[]]>} */ ([
   ['assets + generated data', process.execPath, ['tools/verify-assets.mjs']],
-  ['tests + fail-closed coverage', npm, ['run', 'test:coverage']],
-  ['static types', npm, ['run', 'typecheck']],
-  ['lint + style', npm, ['run', 'lint']],
-  ['suite health (shuffle seed 20260816)', npm, ['test', '--', '--sequence.shuffle', '--sequence.seed=20260816']],
-  ['mutation', npm, ['run', 'mutate']],
-  ['browser + a11y + visual + real execution', npm, ['run', 'test:e2e']],
+  ['tests + fail-closed coverage', process.execPath, npmArgs('run', 'test:coverage')],
+  ['static types', process.execPath, npmArgs('run', 'typecheck')],
+  ['lint + style', process.execPath, npmArgs('run', 'lint')],
+  ['suite health (shuffle seed 20260816)', process.execPath, npmArgs('test', '--', '--sequence.shuffle', '--sequence.seed=20260816')],
+  ['mutation', process.execPath, npmArgs('run', 'mutate')],
+  ['browser + a11y + visual + real execution', process.execPath, npmArgs('run', 'test:e2e')],
   ['checker negative controls', process.execPath, ['tools/checker-controls.mjs']],
   ['license + secret scan', process.execPath, ['tools/supply-chain.mjs']],
-  ['dependency audit (high/critical gate)', npm, ['audit', '--audit-level=high']],
+  ['dependency audit (high/critical gate)', process.execPath, npmArgs('audit', '--audit-level=high')],
   ['source state', process.execPath, ['tools/source-state.mjs']],
 ]);
 
