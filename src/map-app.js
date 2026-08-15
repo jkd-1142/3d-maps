@@ -114,7 +114,11 @@ export function createTaiwanMap({ mount, onActiveChange, onSelectedChange, canva
 
   const motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
   let reducedMotion = motionQuery.matches;
-  motionQuery.addEventListener('change', (event) => { reducedMotion = event.matches; });
+  let needsRender = true;
+  motionQuery.addEventListener('change', (event) => {
+    reducedMotion = event.matches;
+    needsRender = true;
+  });
   let state = INITIAL_STATE;
   let flight = null;
   let pointerStart = null;
@@ -162,6 +166,7 @@ export function createTaiwanMap({ mount, onActiveChange, onSelectedChange, canva
       }
     }
     state = nextState;
+    needsRender = true;
     onActiveChange(activeProvinceId(state));
     onSelectedChange(state.selected);
     renderer.domElement.style.cursor = state.hovered ? 'pointer' : 'grab';
@@ -227,16 +232,24 @@ export function createTaiwanMap({ mount, onActiveChange, onSelectedChange, canva
     id ? selectProvince(id) : reset();
   });
   controls.addEventListener('start', () => { flight = null; });
+  controls.addEventListener('change', () => { needsRender = true; });
   window.addEventListener('resize', () => {
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight);
+    needsRender = true;
   });
 
   const clock = new THREE.Clock();
+  let lastRenderEnd = -Infinity;
   renderer.setAnimationLoop(() => {
-    const delta = Math.min(clock.getDelta(), 0.05);
+    clock.getDelta();
     const elapsed = clock.elapsedTime;
+    const now = window.performance.now() / 1000;
+    if ((reducedMotion && !needsRender) || now - lastRenderEnd < 1 / 30) {
+      return;
+    }
+    const delta = Math.min(now - Math.max(0, lastRenderEnd), 0.05);
     if (!reducedMotion) {
       const positions = sea.geometry.attributes.position;
       for (let index = 0; index < positions.count; index += 1) {
@@ -271,6 +284,8 @@ export function createTaiwanMap({ mount, onActiveChange, onSelectedChange, canva
     }
     controls.update();
     renderer.render(scene, camera);
+    needsRender = false;
+    lastRenderEnd = window.performance.now() / 1000;
   });
 
   const debug = {

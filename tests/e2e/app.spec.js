@@ -29,6 +29,7 @@ test.describe('Taiwan 3D map acceptance', () => {
 
   test('S06/S07/S09 selects, presents a card, and resets', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop-chromium', 'desktop interaction contract');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     await expect(page.locator('#app-status')).toHaveAttribute('data-state', 'ready');
     const point = await page.evaluate(() => window.__TAIWAN_MAP__?.screenPoint('taipei'));
@@ -47,6 +48,7 @@ test.describe('Taiwan 3D map acceptance', () => {
 
   test('S08/S10 drag is not click and controls keep safe limits', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop-chromium', 'desktop pointer contract');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     await expect(page.locator('#app-status')).toHaveAttribute('data-state', 'ready');
     const point = await page.evaluate(() => window.__TAIWAN_MAP__?.screenPoint('taipei'));
@@ -101,6 +103,7 @@ test.describe('Taiwan 3D map acceptance', () => {
 
   test('S12 resize updates renderer and camera aspect', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop-chromium', 'desktop resize contract');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     for (const viewport of [{ width: 812, height: 375 }, { width: 768, height: 1024 }, { width: 1440, height: 900 }]) {
       await page.setViewportSize(viewport);
@@ -142,6 +145,7 @@ test.describe('Taiwan 3D map acceptance', () => {
 
   test('S15 becomes ready within 3000ms with no CDN requests', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop-chromium', 'desktop performance contract');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     const external = [];
     page.on('request', (request) => {
       const url = new URL(request.url());
