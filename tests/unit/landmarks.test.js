@@ -8,6 +8,7 @@ describe('S03/S04 landmark catalog', () => {
     expect(Object.keys(LANDMARKS).sort()).toEqual(PROVINCES.map(({ id }) => id).sort());
     for (const province of PROVINCES) {
       const landmark = LANDMARKS[province.id];
+      expect(landmark).toMatchObject({ titleZh: expect.any(String), descZh: expect.any(String) });
       expect(landmark.title.length).toBeGreaterThan(2);
       expect(landmark.desc.length).toBeGreaterThan(10);
       const model = landmark.build();

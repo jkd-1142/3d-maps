@@ -1,8 +1,11 @@
 # Đài Loan 3D — 22 huyện thị
 
-Một bản đồ Three.js tương tác, chạy hoàn toàn bằng file tĩnh và không gọi CDN ở
-runtime. Rê chuột hoặc chọn một huyện thị để vùng đất nhô lên, landmark low-poly
-xuất hiện và thẻ thông tin tiếng Việt được mở.
+Một bản đồ Three.js tương tác song ngữ **Tiếng Việt / 繁體中文**, chạy hoàn toàn
+bằng file tĩnh và không gọi CDN ở runtime. Rê chuột hoặc chọn một huyện thị để
+vùng đất nhô lên, landmark low-poly xuất hiện và thẻ thông tin được mở.
+
+Giao diện tự nhận diện ngôn ngữ trình duyệt, ghi nhớ lựa chọn trong menu **Ngôn
+ngữ / 語言**, và hỗ trợ liên kết trực tiếp `?lang=vi` hoặc `?lang=zh-TW`.
 
 ## Yêu cầu
 

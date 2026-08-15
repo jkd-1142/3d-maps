@@ -7,7 +7,7 @@ describe('S03/S04 catalog consistency', () => {
     expect(PROVINCES).toHaveLength(22);
     expect(new Set(PROVINCES.map(({ id }) => id)).size).toBe(22);
     for (const item of PROVINCES) {
-      expect(item).toMatchObject({ id: expect.any(String), zh: expect.any(String), name: expect.any(String), type: expect.any(String), pop: expect.any(Number) });
+      expect(item).toMatchObject({ id: expect.any(String), zh: expect.any(String), name: expect.any(String), type: expect.any(String), typeZh: expect.any(String), pop: expect.any(Number) });
       expect(item.pop).toBeGreaterThan(0);
     }
   });
@@ -18,6 +18,8 @@ describe('S03/S04 catalog consistency', () => {
     expect(byId['hsinchu-city'].type).not.toBe(byId['hsinchu-county'].type);
     expect(byId['chiayi-city'].name).toBe(byId['chiayi-county'].name);
     expect(byId['chiayi-city'].type).not.toBe(byId['chiayi-county'].type);
+    expect(byId['hsinchu-city'].zh).not.toBe(byId['hsinchu-county'].zh);
+    expect(byId['chiayi-city'].zh).not.toBe(byId['chiayi-county'].zh);
   });
 
   it('S03 rejects incomplete, duplicate, or invalid catalog records', () => {
@@ -26,6 +28,7 @@ describe('S03/S04 catalog consistency', () => {
     expect(() => assertCatalog(PROVINCES.map((item, index) => index === 1 ? { ...item, id: PROVINCES[0].id } : item))).toThrow('non-empty and unique');
     expect(() => assertCatalog(PROVINCES.map((item, index) => index === 0 ? { ...item, id: '' } : item))).toThrow('non-empty and unique');
     expect(() => assertCatalog(PROVINCES.map((item, index) => index === 0 ? { ...item, name: '' } : item))).toThrow('text is incomplete');
+    expect(() => assertCatalog(PROVINCES.map((item, index) => index === 0 ? { ...item, typeZh: '' } : item))).toThrow('text is incomplete');
     expect(() => assertCatalog(PROVINCES.map((item, index) => index === 0 ? { ...item, pop: 0 } : item))).toThrow('population is invalid');
   });
 });

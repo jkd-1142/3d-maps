@@ -74,7 +74,7 @@ function makeProvinceEntry(province, index, scene, hitMeshes) {
   return { group, province, topMaterial, centroid, targetY: 0, targetEmissive: 0, landmark: null, animation: null };
 }
 
-export function createTaiwanMap({ mount, onActiveChange, onSelectedChange }) {
+export function createTaiwanMap({ mount, onActiveChange, onSelectedChange, canvasLabel }) {
   if (window.__FORCE_WEBGL_FAILURE__ === true) {
     throw new Error('WebGL unavailable (controlled failure)');
   }
@@ -86,7 +86,7 @@ export function createTaiwanMap({ mount, onActiveChange, onSelectedChange }) {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.domElement.setAttribute('role', 'img');
-  renderer.domElement.setAttribute('aria-label', 'Bản đồ 3D tương tác của Đài Loan với 22 huyện thị. Kéo để xoay và cuộn để thu phóng.');
+  renderer.domElement.setAttribute('aria-label', canvasLabel);
   mount.prepend(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -289,5 +289,10 @@ export function createTaiwanMap({ mount, onActiveChange, onSelectedChange }) {
       return { x: (point.x + 1) * innerWidth / 2, y: (-point.y + 1) * innerHeight / 2 };
     },
   };
-  return { select: selectProvince, reset, debug };
+  return {
+    select: selectProvince,
+    reset,
+    setCanvasLabel(label) { renderer.domElement.setAttribute('aria-label', label); },
+    debug,
+  };
 }

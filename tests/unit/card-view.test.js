@@ -21,6 +21,26 @@ describe('S14 province card locale formatting', () => {
     ).stats).toBe('2,50 triệu dân · 12.345 km²');
   });
 
+  it('formats complete Traditional Chinese province and landmark content', () => {
+    const result = provinceCardView(
+      { id: 'taipei', type: 'Thành phố trực thuộc TW', typeZh: '直轄市', name: 'Đài Bắc', zh: '臺北市', pop: 2510000, area: 271 },
+      { title: 'Tháp Taipei 101', desc: 'Mô tả', titleZh: '臺北 101', descZh: '臺北的代表性地標。' },
+      'zh-TW',
+    );
+    expect(result).toEqual({
+      type: '直轄市',
+      name: '臺北市',
+      landmark: '臺北 101',
+      description: '臺北的代表性地標。',
+      stats: '251 萬人 · 271 平方公里',
+    });
+    expect(() => provinceCardView(
+      { typeZh: '直轄市', zh: '臺北市', pop: 1, area: 1 },
+      { title: 'x', desc: 'x', titleZh: '', descZh: '說明' },
+      'zh',
+    )).toThrow('Traditional Chinese');
+  });
+
   it('rejects missing or non-finite values', () => {
     expect(() => provinceCardView({ name: 'x', pop: Number.NaN, area: 1 }, { title: 'x', desc: 'x' })).toThrow('finite population');
     expect(() => provinceCardView({ name: 'x', pop: 1, area: Number.NaN }, { title: 'x', desc: 'x' })).toThrow('finite area');

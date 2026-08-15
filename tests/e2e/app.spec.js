@@ -160,4 +160,31 @@ test.describe('Taiwan 3D map acceptance', () => {
     expect(Math.max(...durations)).toBeLessThan(3000);
     expect(external).toEqual([]);
   });
+
+  test('Revision 3 switches to complete Traditional Chinese without losing selection', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name !== 'desktop-chromium', 'single bilingual contract');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/?lang=zh-TW');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'zh-TW');
+    await expect(page).toHaveTitle('臺灣 3D — 22 縣市');
+    await expect(page.locator('#brand-heading')).toHaveText('臺灣');
+    await expect(page.locator('#province-select option')).toHaveCount(23);
+    await expect(page.locator('#province-select option').nth(1)).toContainText('臺北市 · 直轄市');
+    await page.selectOption('#province-select', 'taipei');
+    await expect(page.locator('#card-name')).toHaveText('臺北市');
+    await expect(page.locator('#card-landmark')).toHaveText('特色地標 · 臺北 101');
+    await expect(page.locator('#card-stats')).toHaveText('251 萬人 · 269 平方公里');
+    await expect(page.locator('canvas')).toHaveAttribute('aria-label', /臺灣 22 縣市/);
+    await page.selectOption('#language-select', 'vi');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'vi');
+    await expect(page).toHaveURL(/lang=vi/);
+    await expect(page.locator('#province-card')).toHaveAttribute('data-province-id', 'taipei');
+    await expect(page.locator('#card-name')).toHaveText('Đài Bắc');
+    await page.selectOption('#language-select', 'zh-TW');
+    await expect(page).toHaveURL(/lang=zh-TW/);
+    await expect(page.locator('#card-name')).toHaveText('臺北市');
+    await page.reload();
+    await expect(page.locator('html')).toHaveAttribute('lang', 'zh-TW');
+    await page.screenshot({ path: 'artifacts/acceptance/desktop-zh-tw.png', fullPage: true });
+  });
 });

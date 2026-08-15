@@ -32,7 +32,7 @@ export function buildProvinceEntries(geoJson, metadata) {
   const entries = metadata.map((meta) => {
     const feature = geoJson.features.find((candidate) => {
       const county = candidate?.properties?.county;
-      return typeof county === 'string' && normalizeChinese(county).startsWith(meta.zh);
+      return typeof county === 'string' && normalizeChinese(county).startsWith(meta.sourceZh ?? meta.zh);
     });
     if (!feature) {
       throw new Error(`Missing GeoJSON feature: ${meta.zh} (${meta.id})`);
@@ -49,8 +49,10 @@ export function buildProvinceEntries(geoJson, metadata) {
     }
     return {
       id: meta.id,
+      zh: meta.zh,
       name: meta.name,
       type: meta.type,
+      typeZh: meta.typeZh,
       pop: meta.pop,
       area: Math.round(areaSquareMeters / 1e6),
       polys,

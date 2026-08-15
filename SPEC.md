@@ -345,3 +345,16 @@ rồi bổ sung test hành vi (không test chỉ để chạm dòng) cho tới k
 - 2026-08-16 (Asia/Taipei): người dùng trả lời nguyên văn
   **“duyệt tất cả , hãy chạy dự án tới hoàn thành 100%”**. Revision 2 và việc
   tiếp tục toàn bộ gauntlet được phê duyệt.
+
+## 11. Revision 3 — bản địa hóa tiếng Trung phồn thể (append-only)
+
+Yêu cầu bổ sung đã được người dùng phê duyệt trực tiếp: **“hãy làm cả bản tiếng
+trung phồn thể cho tôi”**.
+
+- Giữ nguyên tiếng Việt và thêm lựa chọn `繁體中文` ngay trong giao diện.
+- Bản tiếng Trung phồn thể bao phủ toàn bộ UI, accessibility text, trạng thái,
+  fallback, 22 tên đơn vị hành chính, loại hành chính, 22 địa danh, mô tả và
+  thống kê.
+- Ghi nhớ lựa chọn ngôn ngữ; hỗ trợ mở trực tiếp bằng `?lang=zh-TW`.
+- Chuyển ngôn ngữ không reset lựa chọn tỉnh/thành hay trạng thái bản đồ.
+- Bổ sung unit/E2E acceptance và chạy lại gauntlet trước khi xuất bản.

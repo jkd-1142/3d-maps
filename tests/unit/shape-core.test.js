@@ -8,7 +8,7 @@ function makeGeoJson({ missingLast = false, invalidLast = false, polygonFirst = 
     type: 'FeatureCollection',
     features: source.map((meta, index) => ({
       type: 'Feature',
-      properties: { county: meta.zh.replaceAll('臺', '台') + (meta.type === 'Huyện' ? '縣' : '市'), area: invalidAreaLast && index === source.length - 1 ? 0 : (index + 1) * 1_000_000 },
+      properties: { county: meta.zh.replaceAll('臺', '台'), area: invalidAreaLast && index === source.length - 1 ? 0 : (index + 1) * 1_000_000 },
       geometry: {
         type: unsupportedLast && index === source.length - 1 ? 'Point' : polygonFirst && index === 0 ? 'Polygon' : 'MultiPolygon',
         coordinates: invalidLast && index === source.length - 1
@@ -27,6 +27,7 @@ describe('GeoJSON shape builder', () => {
     expect(entries).toHaveLength(22);
     expect(entries.map(({ id }) => id)).toEqual(PROVINCES.map(({ id }) => id));
     expect(entries[0].area).toBe(1);
+    expect(entries[0]).toMatchObject({ zh: '臺北市', typeZh: '直轄市' });
     expect(entries[0].polys[0]).toEqual([[120, 23], [120.1, 23], [120.1, 23.1], [120, 23.1], [120, 23]]);
     for (const entry of entries) {
       expect(entry.polys).toHaveLength(1);
