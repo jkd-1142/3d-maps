@@ -23,7 +23,7 @@ describe('S14 province card locale formatting', () => {
 
   it('formats complete Traditional Chinese province and landmark content', () => {
     const result = provinceCardView(
-      { id: 'taipei', type: 'Thành phố trực thuộc TW', typeZh: '直轄市', name: 'Đài Bắc', zh: '臺北市', pop: 2510000, area: 271 },
+      { id: 'taipei', type: 'Thành phố trực thuộc TW', typeZh: '直轄市', name: 'Đài Bắc', zh: '臺北市', pop: 2515500, area: 271 },
       { title: 'Tháp Taipei 101', desc: 'Mô tả', titleZh: '臺北 101', descZh: '臺北的代表性地標。' },
       'zh-TW',
     );
@@ -32,12 +32,17 @@ describe('S14 province card locale formatting', () => {
       name: '臺北市',
       landmark: '臺北 101',
       description: '臺北的代表性地標。',
-      stats: '251 萬人 · 271 平方公里',
+      stats: '251.55 萬人 · 271 平方公里',
     });
     expect(() => provinceCardView(
       { typeZh: '直轄市', zh: '臺北市', pop: 1, area: 1 },
       { title: 'x', desc: 'x', titleZh: '', descZh: '說明' },
       'zh',
+    )).toThrow('Traditional Chinese');
+    expect(() => provinceCardView(
+      { typeZh: 4, zh: '臺北市', pop: 1, area: 1 },
+      { title: 'x', desc: 'x', titleZh: '地標', descZh: '說明' },
+      'zh-TW',
     )).toThrow('Traditional Chinese');
   });
 
