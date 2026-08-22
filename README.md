@@ -42,3 +42,5 @@ nghiệm thu, negative controls, license/secret scan, `npm audit` và source has
 - Three.js r160 được vendored theo giấy phép MIT.
 
 Chi tiết hợp đồng xem `SPEC.md`; kết quả gauntlet cuối xem `EVIDENCE.md`.
+
+   ![License](https://img.shields.io/badge/license-MIT-blue.svg)
